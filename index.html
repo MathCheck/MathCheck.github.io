@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- Meta tags for social media banners, these should be filled in appropriatly as they are your "business card" -->
+  <!-- Replace the content tag with appropriate information -->
+  <meta name="description" content="Is Your Model Really A Good Math Reasoner? Evaluating Mathematical Reasoning with Checklist">
+
+  <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
+  <!-- Keywords for your paper to be indexed by-->
+  <meta name="keywords" content="Math Reasoning Benchmark, Multimodal Reasoning, Vision and Language Dataset, Vision Language Model, LLM, VLM">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <title>MathCheck</title>
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-MFCT45H');</script>
+  <!-- End Google Tag Manager -->
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="icon" href="static/images/icon.png">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script src="static/js/bulma-carousel.min.js"></script>
+  <script src="static/js/bulma-slider.min.js"></script>
+  <script src="static/js/index.js"></script>
+  </head>
+  <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MFCT45H" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://github.com/zhouzihao501/DiverseMWP">
+            DiverseMWP
+          </a>
+          <a class="navbar-item" href="https://github.com/ning-mz/SCA-GPS">
+            SCA-GPS
+          </a>
+          <a class="navbar-item" href="https://github.com/hkust-nlp/deita">
+            DEITA
+          </a>
+          <a class="navbar-item" href="https://github.com/zhouzihao501/MathAttack">
+            MathAttack
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-2 publication-title"><img src="static/images/icon.png" width="85" /> Is Your Model Really A Good Math Reasoner? Evaluating Mathematical Reasoning with Checklist</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- Paper authors -->
+                <span class="author-block">
+                  <a href="https://zhouzihao501.github.io/" target="_blank"><font color="#B082C9"><b>Zihao Zhou</b></font></a><sup>12*</sup>&emsp;
+                </span>
+                <span class="author-block">
+                  <a href="https://sudanl.github.io/" target="_blank"><font color="#B082C9"><b>Shudong Liu</b></font></a><sup>3*</sup>&emsp;
+                </span>
+                <span class="author-block">
+                  <a href="https://github.com/ning-mz" target="_blank"><font color="#B082C9"><b>Maizhen Ning</b></font></a><sup>12</sup>&emsp;
+                </span>
+                <span class="author-block">
+                  <a href="https://vpeterv.github.io/" target="_blank"><font color="#B082C9"><b>Wei Liu</b></font></a><sup>4</sup>&emsp;
+                </span>
+                <br/>
+                <span class="author-block">
+                  <a href="https://jd92.wang/" target="_blank"><font color="#B082C9"><b>Jindong Wang</b></font></a><sup>5</sup>&emsp;
+                </span>
+                <span class="author-block">
+                  <a href="https://www.fst.um.edu.mo/personal/derek-wong/" target="_blank"><font color="#B082C9"><b>Derek F. Wong</b></font></a><sup>3</sup>&emsp;
+                </span>
+                <span class="author-block">
+                  <a href="https://cgi.csc.liv.ac.uk/~xiaowei/" target="_blank"><font color="#B082C9"><b>Xiaowei Huang</b></font></a><sup>2</sup>&emsp;
+                </span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=qj66yXAAAAAJ&hl=zh-CN&oi=ao" target="_blank"><font color="#B082C9"><b>Qiufeng Wang</b></font></a><sup>1</sup>&emsp;
+                </span>
+                <span class="author-block">
+                  <a href="https://sites.google.com/view/kaizhu-huang-homepage" target="_blank"><font color="#B082C9"><b>Kaizhu Huang</b></font></a><sup>6</sup>&emsp;
+                </span>
+                </div>
+
+                  <div class="is-size-5 publication-authors">
+                    <span class="author-block">
+                      <sup>1</sup>Xi’an Jiaotong-liverpool University&emsp;
+                      <sup>2</sup>University of Liverpool&emsp;
+                      <sup>3</sup>University of Macau&emsp;
+                      <br/>
+                      <sup>4</sup>Hong Kong University of Science and Technology&emsp;
+                      <sup>5</sup>Microsoft Research Asia&emsp;
+                      <br/>
+                      <sup>6</sup>Duke Kunshan University&emsp;
+                      <sup>*</sup>Equal Contribution
+                    </span>
+                    <!-- <span class="author-block">Institution Name<br>Conferance name and year</span> -->
+                    <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Equal Contribution</small></span> -->
+                  </div>
+
+                  <div class="content has-text-centered">
+                    <div class="publication-links">
+                      <span class="link-block">
+                        <a href="" target="_blank"
+                        class="external-link button is-normal is-rounded is-dark">
+                        <span class="icon">
+                          <i class="fas fa-file-pdf"></i>
+                        </span>
+                        <span>Paper</span>
+                      </a>
+                    </span>
+
+                    <span class="link-block">
+                      <a href="https://huggingface.co/datasets/PremiLab-Math/MathCheck/tree/main" target="_blank"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fa fa-database"></i>
+                      </span>
+                      <span>HF Dataset</span>
+                    </a>
+                  </span>
+                  </span>
+
+                  <span class="link-block">
+                    <a href="" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                  </span>
+
+                <span class="link-block">
+                  <a href="" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fa fa-database"></i>
+                  </span>
+                  <span>Results</span>
+                  </a>
+                </span>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Teaser image-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="static/images/Overview.png" height="120%"/>
+      <!-- <h2 class="subtitle has-text-centered">Example tasks in <span style="font-weight:bold;">BLINK</span>.</h2> -->
+      <h2 class="hero-body has-text-centered">
+        <!-- <br> -->
+        Overview of <img src="static/images/icon.png" width="40" /> <span style="font-weight:bold;">MATHCHECK</span> design. The horizontal axis examines the task generalization of four math tasks while the vertical axis examines the reasoning robustness through four problem varieties. 
+        All data are generated from seed data, which is also from mainstream benchmark paradigm.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End teaser image -->
+
+
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <!-- Paper abstract -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">Introduction</h2>
+        <div class="content has-text-justified">
+          <p>
+            Exceptional mathematical reasoning ability is one of the key features that demonstrate the power of large language models (LLMs). How to comprehensively define and evaluate the mathematical abilities of LLMs, and even reflect the user experience in real-world scenarios, has emerged as a critical issue. Current benchmarks predominantly concentrate on problem-solving capabilities, which presents a substantial risk of model overfitting and fails to accurately represent genuine mathematical reasoning abilities. In this paper, we argue that <span style="font-weight:bold;">if a model really understands a problem, it should be robustly and readily applied across a diverse array of tasks</span>. 
+            <br/>
+            Motivated by this, we introduce <img src="static/images/icon.png" width="40" /> <span style="font-weight:bold;">MATHCHECK</span>, a well-designed checklist for testing task generalization and reasoning robustness, as well as an automatic tool to generate checklists efficiently. MathCheck includes multiple mathematical reasoning tasks and robustness test types to facilitate a comprehensive evaluation of both mathematical reasoning ability and behavior testing. Utilizing MathCheck, we develop <span style="font-weight:bold;">MATHCHECK-GSM</span> and <span style="font-weight:bold;">MATHCHECK-GEO</span> to assess mathematical textual reasoning and multi-modal reasoning capabilities, respectively, serving as upgraded versions of benchmarks including GSM8k, GeoQA, UniGeo, and Geometry3K. 
+            <br/>
+            <br/>
+            We adopt MathCheck-GSM and MathCheck-GEO to evaluate over 20 LLMs and 11 MLLMs, assessing their comprehensive mathematical reasoning abilities. Our results demonstrate that while frontier LLMs like GPT-4o continue to excel in various abilities on the checklist, many other model families exhibit a significant decline. Further experiments indicate that, compared to traditional math benchmarks, MathCheck better reflects true mathematical abilities and represents mathematical intelligence more linearly, thereby supporting our design. On our MathCheck, we can easily conduct detailed behavior analysis to deeply investigate models.
+          </p>
+        </div>
+      </div>  
+    </div>
+    <!-- Genration -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="content has-text-justified">
+          <h2 class="title is-3">Data Collection</h2>
+          <img src="static/images/generation.png" height="100%"/>
+          <h2 class="content has-text-justified">
+            <img src="static/images/icon.png" width="30" /> <span style="font-weight:bold;">MATHCHECK</span> generation pipeline. We employ (M)LLMs (e.g., GPT-4-Turbo in our experiments) as engines to automatically generate <img src="static/images/icon.png" width="30" /> <span style="font-weight:bold;">MATHCHECK</span> data.
+            Users first assemble a collection of math problems with labels as seed data. Second, (M)LLMs initially rewrite these problems into their robustness varieties to make up the robustness problem set. 
+            Third, each problem in this set will be extended to construct multiple mathematical tasks about this problem.
+          </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Paper Experiment Results -->
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+  <h1 class="title is-1">
+    <span style="vertical-align: middle">Experiment Results</span>
+  </h1>
+  </div>
+</section>
+
+
+<!-- results -->
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">LLMs on <span style="font-weight:bold;">MATHCHECK-GSM</span></h2>
+        <img src="static/images/GSM-result.jpeg" width="90%"/>
+        <!-- <h2 class="content has-text-centered">
+          Qualitative results on <b>MuirBench</b>. 
+        </h2> -->
+        <h2 class="content has-text-justified">
+          Model performance on <span style="font-weight:bold;">MATHCHECK-GSM</span>. PS: Problem Solving, AJ: Answerable Judging, OJ: Outcome Judging, PJ: Process Judging, OP: Origianl Problem, PU: Problem Understanding, ID: Irrelevant Disturbance, SU: Scenario Understanding. Each score is the average score of related units. For example, All means all units, PS includes solving units on four problem types, OP includes original problems on four tasks units.
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3">LLMs Detailed Results</h2>
+        <!-- <p>One example for each reasoning skill required in <span class="mathvista">MathVista</span></p> -->
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/gpt-4o.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/gpt-4-turbo.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/gpt-3.5-turbo.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/gemini-1.5-pro.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/claude-3-opus.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/claude-3-sonnet.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/claude-3-haiku.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/Llama-3-70B-Instruct.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/deepseek-chat.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/Mixtral-8x7B-Instruct.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/Mixtral-8x7B_base.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/Qwen1.5-72B-Chat.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/Phi-3-medium-4k-instruct.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/phi-3-mini-4k-instruct.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/Llama-3-8B-Instruct.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/chatglm3-6b.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/deepseek-math-7b-rl.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/deepseek-math-7b-instruct.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/deepseek-math-7b-base.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/LLMs-results/MetaMath-70B.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">MLLMs on <span style="font-weight:bold;">MATHCHECK-GEO</span></h2>
+        <img src="static/images/GEO-result.jpeg" width="90%"/>
+        <h2 class="content has-text-centered">
+          Model performance on <span style="font-weight:bold;">MATHCHECK-GEO</span>. 
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3">MLLMs Detailed Results</h2>
+        <!-- <p>One example for each reasoning skill required in <span class="mathvista">MathVista</span></p> -->
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/gpt-4o-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/gpt-4-turbo-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/gpt-4-vision-preview-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/gemini-1.5-pro-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/gemini-1.5-flash-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/claude-3-opus-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/claude-3-sonnet-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/claude-3-haiku-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/internvl-1.5-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/phi-3-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+          <div class="box m-5">
+            <div class="content has-text-centered">
+              <img src="static/images/MLLMs-results/cogvlm-2-ori.png" alt="grade-lv" width="100%" />
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3"><span style="font-weight:bold;">MATHCHECK-GSM</span> Represents Intelligence More Linearly</h2>
+        <img src="static/images/intelligence/gsm1k.jpeg" width="100%"/>
+        <!-- <h2 class="content has-text-centered">
+          Qualitative results on <b>MuirBench</b>. 
+        </h2> -->
+        <h2 class="content has-text-justified">
+          Correlation with GSM1k, a dataset that reflects real mathematical reasoning ability. p and e represent the Pearson Correlation Coefficient, and Root Mean Square Error, respectively.
+          By comparing the Pearson correlation coefficient and the root mean square error, it shows that MATHCHECK has a higher correlation coefficient with GSM1k, mitigating bias evaluation caused by overfitting and data contamination.
+        </h2>
+        <img src="static/images/intelligence/loss.jpeg" width="100%"/>
+        <!-- <h2 class="content has-text-centered">
+          Qualitative results on <b>MuirBench</b>. 
+        </h2> -->
+        <h2 class="content has-text-justified">
+          Performance correlation with BPC-loss, which reflects compression efficiency. The lower BPC-loss represents the higher compression efficiency.
+          Our method shows that many models have scores on our benchmark that align more accurately with their true mathematical abilities.
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- Behavior Analysis -->
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+  <h1 class="title is-1">
+    <span style="vertical-align: middle">Behavior Analysis</span>
+  </h1>
+  </div>
+</section>
+
+
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-five-sixths">
+        <h2 class="title is-3">Behavior of Math Models</h2>
+        <img src="static/images/sft.png" width="100%"/>
+        <h2 class="content has-text-justified">
+          Behavior of mathematical models trained on massive solving data.
+          It implies that training solely on massive solving data is not the right direction to improve mathematical reasoning ability. Instead, training models with high-quality and diverse mathematical data, beyond just solving, should be considered.
+        </h2>
+        <h2 class="title is-3">Reasoning Consistency</h2>
+        <h2 class="content has-text-justified">
+          In the detailed results above, we can see most of them show good reasoning consistency since they achieve similar scores on each unit, such as GPT series, Llama-3 series and Mixtral series on MATHCHECK-GSM and GPT series on MATHCHECK-GEO. This is an interesting finding as it substantiates our assertion: a model that really understands
+          a problem can robustly work well on multiple related tasks. Meanwhile, we also find that some models perform reasoning inconsistently, show excellent performance on the solving task but much worse in other units of
+          MATHCHECK, These abnormal inconsistency behaviors of generalist models are highly similar to those mathematical models, revealing that they may conduct excessive decoration on original benchmarks.
+        </h2>
+        <h2 class="title is-3">Behavior on Different Complexity Levels</h2>
+        <img src="static/images/different_level.jpeg" width="77%"/>
+        <h2 class="content has-text-justified">
+          Performance on different complexity levels (i.e. reasoning steps) of MATHCHECK-GSM.
+          We can observe that the models’ accuracy on the original
+          problem solving fluctuates and does not show an obvious downward trend as the problems are more
+          difficult. While the score “All" shows a steady downward trend, it implies that MATHCHECK better
+          demonstrates the reasoning skills and capabilities required when problems become difficult.
+        </h2>
+        <h2 class="title is-3">Behavior on Different Prompting Technologies</h2>
+        <img src="static/images/prompt.jpeg" width="70%"/>
+        <h2 class="content has-text-justified">
+          We evaluate five prompting techniques including
+          Zero-shot, Few-shot, CoT, Least to Most prompting, and Plan-and-Solve prompting on GPT-3.5-turbo. Overall, Chain of
+          Thought (CoT) and Plan-and-Solve (PS) in the zero-shot setting demonstrate superior performance,
+          though this is not consistently the case across all tasks and settings. In contrast, the Few-shot prompt
+          generally yields poorer results than the Zero-shot prompt, particularly in Outcome Judging and
+          Process Judging tasks. Our analysis of the model prediction results indicates that the few-shot setting
+          tends to diminish and abbreviate the reasoning steps. Plan-and-Solve (PS) prompt also does not
+          achieve satisfactory results, potentially due to its problem-decomposition method being less effective
+          for tasks beyond Problem Solving.
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      <pre><code>
+        @article{
+        }
+      </code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
